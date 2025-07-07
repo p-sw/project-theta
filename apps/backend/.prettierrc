@@ -5,5 +5,5 @@
   "importOrderParserPlugins": ["typescript", "jsx", "decorators"],
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true,
-  "importOrder": ["^@(.*)$", "^[^./](.*)$", "^[./]"]
+  "importOrder": ["^@([^/]+)/(.*)$", "^[^./@](.*)$", "^@/(.*)$", "^[./]"]
 }
