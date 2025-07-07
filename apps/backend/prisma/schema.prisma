@@ -33,11 +33,30 @@ model User {
   updatedAt DateTime @updatedAt
   banned Ban[]
 
-  googleId String? @unique
-  githubId String? @unique
-  discordId String? @unique
+  github GithubOAuth?
+  discord DiscordOAuth?
 
   mcpConfigs McpConfig[]
+}
+
+model GithubOAuth {
+  id        String   @id
+  accessToken String
+  scope String
+
+  userId String @db.VarChar(33) @unique
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model DiscordOAuth {
+  id        String   @id
+  accessToken String
+  expiresAt DateTime
+  refreshToken String
+  scope String
+
+  userId String @db.VarChar(33) @unique
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model OAuthSession {
