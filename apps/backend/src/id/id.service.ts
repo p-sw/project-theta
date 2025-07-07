@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 
-import hyperid from 'hyperid';
+import * as hyperid from 'hyperid';
 
 export interface DecodedId {
   uuid: string;
