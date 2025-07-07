@@ -1,8 +1,10 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import envLoader from './config';
-import { ConfigModule } from '@nestjs/config';
+import { PrismaModule } from './db/prisma.module';
 
 @Module({
   imports: [
@@ -12,6 +14,7 @@ import { ConfigModule } from '@nestjs/config';
       ignoreEnvFile: true,
       load: [envLoader],
     }),
+    PrismaModule,
   ],
   controllers: [AppController],
   providers: [AppService],
