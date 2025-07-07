@@ -1,48 +1,44 @@
 -- CreateTable
-CREATE TABLE `EmailVerification` (
-    `id` VARCHAR(191) NOT NULL,
-    `email` VARCHAR(191) NOT NULL,
-    `reason` ENUM('SIGNUP', 'PASSWORD_RESET', 'EMAIL_CHANGE') NOT NULL,
-    `status` ENUM('PENDING', 'VERIFIED', 'EXPIRED') NOT NULL,
-    `expiresAt` DATETIME(3) NOT NULL,
-    `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
-    `updatedAt` DATETIME(3) NOT NULL,
-    `userId` VARCHAR(191) NOT NULL,
-
-    UNIQUE INDEX `EmailVerification_userId_key`(`userId`),
-    PRIMARY KEY (`id`)
-) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- CreateTable
 CREATE TABLE `Ban` (
-    `id` VARCHAR(191) NOT NULL,
-    `userId` VARCHAR(191) NOT NULL,
+    `id` VARCHAR(33) NOT NULL,
+    `userId` VARCHAR(33) NOT NULL,
     `reason` VARCHAR(191) NOT NULL,
     `until` DATETIME(3) NULL,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
 
-    UNIQUE INDEX `Ban_userId_key`(`userId`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `User` (
-    `id` VARCHAR(191) NOT NULL,
-    `email` VARCHAR(191) NOT NULL,
+    `id` VARCHAR(33) NOT NULL,
     `passwordHash` VARCHAR(191) NOT NULL,
     `isAdmin` BOOLEAN NOT NULL DEFAULT false,
     `createdAt` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updatedAt` DATETIME(3) NOT NULL,
+    `googleId` VARCHAR(191) NULL,
+    `githubId` VARCHAR(191) NULL,
+    `discordId` VARCHAR(191) NULL,
 
-    UNIQUE INDEX `User_email_key`(`email`),
+    UNIQUE INDEX `User_googleId_key`(`googleId`),
+    UNIQUE INDEX `User_githubId_key`(`githubId`),
+    UNIQUE INDEX `User_discordId_key`(`discordId`),
+    PRIMARY KEY (`id`)
+) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+
+-- CreateTable
+CREATE TABLE `OAuthSession` (
+    `id` VARCHAR(33) NOT NULL,
+    `secret` VARCHAR(191) NOT NULL,
+
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- CreateTable
 CREATE TABLE `McpConfig` (
     `mcpId` VARCHAR(191) NOT NULL,
-    `userId` VARCHAR(191) NOT NULL,
+    `userId` VARCHAR(33) NOT NULL,
     `enabled` BOOLEAN NOT NULL DEFAULT false,
 
     PRIMARY KEY (`mcpId`, `userId`)
@@ -56,9 +52,6 @@ CREATE TABLE `ServerLog` (
 
     PRIMARY KEY (`logKey`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
--- AddForeignKey
-ALTER TABLE `EmailVerification` ADD CONSTRAINT `EmailVerification_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE `Ban` ADD CONSTRAINT `Ban_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `User`(`id`) ON DELETE CASCADE ON UPDATE CASCADE;
