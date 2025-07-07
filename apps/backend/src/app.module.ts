@@ -4,6 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 import envLoader from './config';
 import { PrismaModule } from './db/prisma.module';
 import { IdModule } from './id/id.module';
+import { OAuthModule } from './oauth/oauth.module';
 import { UserModule } from './user/user.module';
 
 @Module({
@@ -19,6 +20,7 @@ import { UserModule } from './user/user.module';
     IdModule,
     /* Modules for Endpoints */
     UserModule,
+    OAuthModule,
   ],
   controllers: [],
   providers: [],
