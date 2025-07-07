@@ -40,6 +40,11 @@ model User {
   mcpConfigs McpConfig[]
 }
 
+model OAuthSession {
+  id        String   @id
+  secret    String
+}
+
 model McpConfig {
   mcpId String
   userId String
