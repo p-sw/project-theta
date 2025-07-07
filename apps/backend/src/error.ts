@@ -3,7 +3,7 @@ export type PossiblyError<E extends Record<string, unknown>, S> =
       [K in keyof E]: {
         ok: false;
         code: K;
-        data: E[K];
+        error: E[K];
       };
     }[keyof E]
   | {
@@ -64,7 +64,7 @@ type InferErrorRecordUnion<
 > = P extends {
   ok: false;
   code: infer C;
-  data: infer D;
+  error: infer D;
 }
   ? C extends keyof any
     ? { [K in C]: D }
@@ -95,15 +95,15 @@ export function error<
 >(
   ...args: {
     [K in keyof E]: E[K] extends void | undefined
-      ? [code: K, data?: E[K]]
-      : [code: K, data: E[K]];
+      ? [code: K, error?: E[K]]
+      : [code: K, error: E[K]];
   }[keyof E]
 ): PossiblyError<E, never> {
-  const [code, data] = args;
+  const [code, error] = args;
   return {
     ok: false,
     code,
-    data,
+    error,
   } as PossiblyError<E, never>;
 }
 
