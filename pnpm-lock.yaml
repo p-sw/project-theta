@@ -52,8 +52,8 @@ importers:
         specifier: ^3.3.0
         version: 3.3.0
       nestlogged-fastify:
-        specifier: ^3.6.2
-        version: 3.6.2(@nestjs/common@11.1.3(reflect-metadata@0.2.2)(rxjs@7.8.2))
+        specifier: 3.6.2-typefix
+        version: 3.6.2-typefix(@nestjs/common@11.1.3(reflect-metadata@0.2.2)(rxjs@7.8.2))
       prisma:
         specifier: ^6.11.1
         version: 6.11.1(typescript@5.8.3)
@@ -3577,8 +3577,8 @@ packages:
     resolution: {integrity: sha512-IFD0mwXHvRFG4JVBMDo21KstTmHJ6oxSe5KesH4b6v5WFjF8Q2naIM2qpD8JnZJ+99xhcq6U5Egtng2FfFK9ow==}
     hasBin: true
 
-  nestlogged-fastify@3.6.2:
-    resolution: {integrity: sha512-FF74tH/HpAKPZ/VuT7YELuITpLYz7G1DIXCqx0aykoJbS7QvIT1paGkUKIE94ruD4we3dzsfeKteHApOzWdy9Q==}
+  nestlogged-fastify@3.6.2-typefix:
+    resolution: {integrity: sha512-4VpXMJm+sDtE82kyqyVHh8EcC5g6qrl/0Z4zbt2wto4eEHqfv3cSaMBWhwF+NRxJCveXGuOjUn2aZ9cq5aZZuw==}
     peerDependencies:
       '@nestjs/common': '>=9 <=11'
 
@@ -8642,7 +8642,7 @@ snapshots:
       inquirer: 8.2.6
       package-manager-detector: 0.2.11
 
-  nestlogged-fastify@3.6.2(@nestjs/common@11.1.3(reflect-metadata@0.2.2)(rxjs@7.8.2)):
+  nestlogged-fastify@3.6.2-typefix(@nestjs/common@11.1.3(reflect-metadata@0.2.2)(rxjs@7.8.2)):
     dependencies:
       '@nestjs/common': 11.1.3(reflect-metadata@0.2.2)(rxjs@7.8.2)
       fastify: 5.4.0
