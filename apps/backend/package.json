@@ -18,7 +18,12 @@
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
-    "prepare": "ts-patch install"
+    "prepare": "ts-patch install",
+    "db": "prisma",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:deploy": "prisma db deploy",
+    "db:studio": "prisma studio"
   },
   "dependencies": {
     "@nestia/core": "^7.0.1",
@@ -29,6 +34,7 @@
     "@nestjs/config": "^4.0.2",
     "@nestjs/core": "^11.0.1",
     "@nestjs/platform-express": "^11.0.1",
+    "@prisma/client": "6.11.1",
     "nestlogged-fastify": "^3.6.1",
     "prisma": "^6.11.1",
     "reflect-metadata": "^0.2.2",
