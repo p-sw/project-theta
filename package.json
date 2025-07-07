@@ -4,8 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "front": "pnpm --filter frontend",
-    "back": "pnpm --filter backend"
+    "env:dev": "dotenvx run -q -f .env.development",
+    "env:local": "dotenvx run -q -f .env.local --ignore=MISSING_ENV_FILE",
+    "front": "pnpm run env:dev -- pnpm run env:local -- pnpm --filter frontend",
+    "back": "pnpm run env:dev -- pnpm run env:local -- pnpm --filter backend"
   },
   "keywords": [],
   "author": "",
