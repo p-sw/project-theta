@@ -5,6 +5,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import envLoader from './config';
 import { PrismaModule } from './db/prisma.module';
+import { IdModule } from './id/id.module';
 
 @Module({
   imports: [
@@ -15,6 +16,7 @@ import { PrismaModule } from './db/prisma.module';
       load: [envLoader],
     }),
     PrismaModule,
+    IdModule,
   ],
   controllers: [AppController],
   providers: [AppService],
