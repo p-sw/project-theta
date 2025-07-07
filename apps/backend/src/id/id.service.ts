@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
 import * as hyperid from 'hyperid';
+import { LoggedFunction, Returns } from 'nestlogged-fastify';
 
 export interface DecodedId {
   uuid: string;
@@ -19,10 +20,14 @@ export class IdService {
     });
   }
 
+  @LoggedFunction({ callLogLevel: 'skip', returnLogLevel: 'debug' })
+  @Returns()
   generate(): string {
     return this.generator();
   }
 
+  @LoggedFunction({ callLogLevel: 'skip', returnLogLevel: 'debug' })
+  @Returns({ uuid: 'uuid', count: 'count' })
   decode(id: string): DecodedId {
     return this.generator.decode(id, { urlSafe: true });
   }
