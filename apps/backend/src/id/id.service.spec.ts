@@ -1,4 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { isCuid } from '@paralleldrive/cuid2';
 
 import { DecodedId, IdService } from './id.service';
 
@@ -108,6 +109,24 @@ describe('IdService', () => {
         expect(decoded.uuid).toBeTruthy();
         expect(typeof decoded.count).toBe('number');
       });
+    });
+  });
+
+  describe('cryptoGenerate', () => {
+    it('should return a string', () => {
+      const id = service.cryptoGenerate();
+      expect(typeof id).toBe('string');
+    });
+
+    it('should return a valid cuid2', () => {
+      const id = service.cryptoGenerate();
+      expect(isCuid(id)).toBe(true);
+    });
+
+    it('should return a unique ID', () => {
+      const ids = Array.from({ length: 10 }, () => service.cryptoGenerate());
+      const uniqueIds = new Set(ids);
+      expect(uniqueIds.size).toBe(ids.length);
     });
   });
 });
