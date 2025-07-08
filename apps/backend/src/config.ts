@@ -1,8 +1,10 @@
 import typia from 'typia';
 
-export interface Config {
+type Numeric = typia.tags.Pattern<'^[0-9]+$'>;
+
+export interface TConfig {
   BACKEND_HOST: string;
-  BACKEND_PORT: number;
+  BACKEND_PORT: string & Numeric;
 
   DISCORD_CLIENT_ID: string;
   DISCORD_CLIENT_SECRET: string;
@@ -13,6 +15,18 @@ export interface Config {
   GITHUB_REDIRECT_URI: string;
 }
 
+type TRANSFORM_KEY = 'BACKEND_PORT';
+export interface Config extends Omit<TConfig, TRANSFORM_KEY> {
+  BACKEND_PORT: number;
+}
+
+function transformer(config: TConfig): Config {
+  return {
+    ...config,
+    BACKEND_PORT: Number(config.BACKEND_PORT),
+  };
+}
+
 export default function envLoader() {
-  return typia.assert<Config>(process.env);
+  return transformer(typia.assert<TConfig>(process.env));
 }
