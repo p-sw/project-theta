@@ -12,8 +12,8 @@ import {
 import { Config } from '@/config';
 import { ErrorFunc, PossiblyError, SuccessFunc, error, ok } from '@/error';
 
+import { OAuthRedirectUriParams } from '../oauth.types';
 import {
-  GitHubOAuthRedirectUriParams,
   GithubAccessTokenCodeRequestBody,
   GithubAccessTokenCodeResponse,
   GithubAccessTokenCodeReturn,
@@ -119,7 +119,7 @@ export class GitHubProvider {
     failureReason: 'code',
   })
   async getAccessToken(
-    data: Pick<GitHubOAuthRedirectUriParams, 'code'>,
+    data: OAuthRedirectUriParams,
     @InjectLogger _logger?: ScopedLogger,
   ) {
     const tokenExchange = await this.requestForToken(

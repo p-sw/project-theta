@@ -9,11 +9,6 @@ export interface DiscordAccessTokenRefreshRequestBody {
   refresh_token: string;
 }
 
-export interface DiscordOAuthRedirectUriParams {
-  code: string;
-  state: string;
-}
-
 export interface DiscordAccessTokenResponse {
   access_token: string;
   token_type: string;

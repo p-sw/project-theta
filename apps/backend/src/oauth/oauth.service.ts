@@ -6,10 +6,9 @@ import {
   ScopedLogger,
 } from 'nestlogged-fastify';
 
+import { OAuthProvider } from './oauth.types';
 import { DiscordProvider } from './providers/discord.provider';
 import { GitHubProvider } from './providers/github.provider';
-
-export type OAuthProvider = 'github' | 'discord';
 
 @LoggedInjectable()
 export class OAuthService {

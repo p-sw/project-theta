@@ -1,8 +1,3 @@
-export interface GitHubOAuthRedirectUriParams {
-  code: string;
-  state: string;
-}
-
 export interface GithubAccessTokenCodeRequestBody {
   client_id: string;
   client_secret: string;

@@ -12,12 +12,12 @@ import {
 import { Config } from '@/config';
 import { ErrorFunc, PossiblyError, SuccessFunc, error, ok } from '@/error';
 
+import { OAuthRedirectUriParams } from '../oauth.types';
 import {
   DiscordAccessTokenCodeRequestBody,
   DiscordAccessTokenRefreshRequestBody,
   DiscordAccessTokenResponse,
   DiscordAccessTokenReturn,
-  DiscordOAuthRedirectUriParams,
   DiscordUserInfoResponse,
 } from './discord.types';
 
@@ -138,7 +138,7 @@ export class DiscordProvider {
     failureReason: 'code',
   })
   async getAccessToken(
-    data: Pick<DiscordOAuthRedirectUriParams, 'code'>,
+    data: OAuthRedirectUriParams,
     @InjectLogger _logger?: ScopedLogger,
   ) {
     const tokenExchange = await this.requestForToken(
