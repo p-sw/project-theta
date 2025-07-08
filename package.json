@@ -12,9 +12,9 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "packageManager": "pnpm@10.8.1",
+  "packageManager": "pnpm@10.12.4+sha512.5ea8b0deed94ed68691c9bad4c955492705c5eeb8a87ef86bc62c74a26b037b08ff9570f108b2e4dbd1dd1a9186fea925e527f141c648e85af45631074680184",
   "dependencies": {
-    "@dotenvx/dotenvx": "^1.45.2"
+    "@dotenvx/dotenvx": "^1.46.0"
   },
   "devDependencies": {
     "@trivago/prettier-plugin-sort-imports": "^5.2.2"
