@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -13,6 +7,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+/// User ban system
 model Ban {
   id        String   @db.VarChar(33) @id
   userId String @db.VarChar(33)
@@ -24,6 +19,7 @@ model Ban {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+/// User account
 model User {
   id        String  @db.VarChar(33) @id
   passwordHash  String
@@ -38,6 +34,7 @@ model User {
   mcpConfigs McpConfig[]
 }
 
+/// Github OAuth connection with user
 model GithubOAuth {
   id        String   @id
   accessToken String
@@ -47,6 +44,7 @@ model GithubOAuth {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+/// Discord OAuth connection with user
 model DiscordOAuth {
   id        String   @id
   accessToken String
@@ -58,11 +56,15 @@ model DiscordOAuth {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
+/// OAuth session for verification of OAuth request
 model OAuthSession {
+  /// PUBLIC KEY (sent with auth url)
   id        String   @id @db.VarChar(33)
+  /// PRIVATE KEY (saved in browser cookie of initial client)
   secret    String
 }
 
+/// Individual MCP config for user
 model McpConfig {
   mcpId String
   userId String @db.VarChar(33)
@@ -73,6 +75,7 @@ model McpConfig {
   @@id([mcpId, userId])
 }
 
+/// Server log for admin panels
 model ServerLog {
   logKey        String   @id
   value         String
