@@ -9,10 +9,7 @@ import {
 import { DiscordProvider } from './providers/discord.provider';
 import { GitHubProvider } from './providers/github.provider';
 
-export enum OAuthProvider {
-  GITHUB = 'github',
-  DISCORD = 'discord',
-}
+export type OAuthProvider = 'github' | 'discord';
 
 @LoggedInjectable()
 export class OAuthService {
@@ -21,9 +18,9 @@ export class OAuthService {
     private readonly discordProvider: DiscordProvider,
   ) {}
 
-  getAuthUrl(provider: OAuthProvider.GITHUB): string;
+  getAuthUrl(provider: Extract<OAuthProvider, 'github'>): string;
   getAuthUrl(
-    provider: OAuthProvider.DISCORD,
+    provider: Extract<OAuthProvider, 'discord'>,
     prompt: 'consent' | 'none',
   ): string;
   @Returns('url')
@@ -33,9 +30,9 @@ export class OAuthService {
     @InjectLogger _logger?: ScopedLogger,
   ): string {
     switch (provider) {
-      case OAuthProvider.GITHUB:
+      case 'github':
         return this.githubProvider.getAuthUrl(_logger);
-      case OAuthProvider.DISCORD:
+      case 'discord':
         return this.discordProvider.getAuthUrl(prompt!, _logger);
     }
   }
@@ -47,9 +44,9 @@ export class OAuthService {
     @InjectLogger _logger?: ScopedLogger,
   ) {
     switch (provider) {
-      case OAuthProvider.GITHUB:
+      case 'github':
         return this.githubProvider.getAccessToken({ code }, _logger);
-      case OAuthProvider.DISCORD:
+      case 'discord':
         return this.discordProvider.getAccessToken({ code }, _logger);
     }
   }
@@ -61,9 +58,9 @@ export class OAuthService {
     @InjectLogger _logger?: ScopedLogger,
   ) {
     switch (provider) {
-      case OAuthProvider.GITHUB:
+      case 'github':
         return this.githubProvider.getUserInfo(accessToken, _logger);
-      case OAuthProvider.DISCORD:
+      case 'discord':
         return this.discordProvider.getUserInfo(accessToken, _logger);
     }
   }
