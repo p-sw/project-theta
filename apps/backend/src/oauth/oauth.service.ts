@@ -42,9 +42,10 @@ export class OAuthService {
     }
   }
 
+  @Returns({ success: 'ok', failureReason: 'code' })
   async getAccessToken(
-    provider: OAuthProvider,
-    code: string,
+    @Logged('provider') provider: OAuthProvider,
+    @Logged('code') code: string,
     @InjectLogger _logger?: ScopedLogger,
   ) {
     switch (provider) {
@@ -55,8 +56,9 @@ export class OAuthService {
     }
   }
 
+  @Returns({ success: 'ok', failureReason: 'code' })
   async getUserInfo(
-    provider: OAuthProvider,
+    @Logged('provider') provider: OAuthProvider,
     accessToken: string,
     @InjectLogger _logger?: ScopedLogger,
   ) {
