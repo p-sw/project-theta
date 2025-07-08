@@ -59,7 +59,7 @@ export class OAuthService {
       },
     });
 
-    return session && session.secret === cookieSecret;
+    return !!session && session.secret === cookieSecret;
   }
 
   async getAccessToken(
