@@ -49,9 +49,8 @@ describe('DiscordProvider', () => {
 
   describe('getAuthUrl', () => {
     it('should return a valid Discord auth URL', () => {
-      const sessionId = random<string>();
       const prompt = 'consent';
-      const url = provider.getAuthUrl(sessionId, prompt);
+      const url = provider.getAuthUrl(prompt);
 
       const expectedUrl = new URL('https://discord.com/oauth2/authorize');
       expectedUrl.searchParams.set('response_type', 'code');
@@ -61,7 +60,6 @@ describe('DiscordProvider', () => {
         mockConfig.DISCORD_REDIRECT_URI,
       );
       expectedUrl.searchParams.set('scope', 'identify');
-      expectedUrl.searchParams.set('state', sessionId);
       expectedUrl.searchParams.set('prompt', prompt);
 
       expect(url).toBe(expectedUrl.toString());

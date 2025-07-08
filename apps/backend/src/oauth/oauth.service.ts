@@ -21,24 +21,22 @@ export class OAuthService {
     private readonly discordProvider: DiscordProvider,
   ) {}
 
-  getAuthUrl(provider: OAuthProvider.GITHUB, sessionId: string): string;
+  getAuthUrl(provider: OAuthProvider.GITHUB): string;
   getAuthUrl(
     provider: OAuthProvider.DISCORD,
-    sessionId: string,
     prompt: 'consent' | 'none',
   ): string;
   @Returns('url')
   getAuthUrl(
     @Logged('provider') provider: OAuthProvider,
-    @Logged('sessionId') sessionId: string,
     @Logged('prompt') prompt?: 'consent' | 'none',
     @InjectLogger _logger?: ScopedLogger,
   ): string {
     switch (provider) {
       case OAuthProvider.GITHUB:
-        return this.githubProvider.getAuthUrl(sessionId, _logger);
+        return this.githubProvider.getAuthUrl(_logger);
       case OAuthProvider.DISCORD:
-        return this.discordProvider.getAuthUrl(sessionId, prompt!, _logger);
+        return this.discordProvider.getAuthUrl(prompt!, _logger);
     }
   }
 

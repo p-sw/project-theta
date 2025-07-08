@@ -68,7 +68,6 @@ export class DiscordProvider {
   @LoggedFunction({ callLogLevel: 'log' })
   @Returns('url')
   getAuthUrl(
-    @Logged('sessionId') sessionId: string,
     @Logged('prompt') prompt: 'consent' | 'none',
     @InjectLogger _logger?: ScopedLogger,
   ): string {
@@ -77,7 +76,6 @@ export class DiscordProvider {
     url.searchParams.set('client_id', this.clientId);
     url.searchParams.set('redirect_uri', this.redirectUri);
     url.searchParams.set('scope', this.getScopeFormat(['identify'], _logger!));
-    url.searchParams.set('state', sessionId);
     url.searchParams.set('prompt', prompt);
 
     return url.toString();

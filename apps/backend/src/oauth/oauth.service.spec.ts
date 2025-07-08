@@ -53,22 +53,18 @@ describe('OAuthService', () => {
 
   describe('getAuthUrl', () => {
     it('should call githubProvider for GITHUB provider', () => {
-      const sessionId = random<string>();
-      service.getAuthUrl(OAuthProvider.GITHUB, sessionId);
+      service.getAuthUrl(OAuthProvider.GITHUB);
       // eslint-disable-next-line @typescript-eslint/unbound-method
       expect(githubProvider.getAuthUrl).toHaveBeenCalledWith(
-        sessionId,
         expect.any(ScopedLogger),
       );
     });
 
     it('should call discordProvider for DISCORD provider', () => {
-      const sessionId = random<string>();
       const prompt = 'consent';
-      service.getAuthUrl(OAuthProvider.DISCORD, sessionId, prompt);
+      service.getAuthUrl(OAuthProvider.DISCORD, prompt);
       // eslint-disable-next-line @typescript-eslint/unbound-method
       expect(discordProvider.getAuthUrl).toHaveBeenCalledWith(
-        sessionId,
         prompt,
         expect.any(ScopedLogger),
       );

@@ -58,15 +58,11 @@ export class GitHubProvider {
    */
   @LoggedFunction({ callLogLevel: 'log' })
   @Returns('url')
-  getAuthUrl(
-    @Logged('sessionId') sessionId: string,
-    @InjectLogger _logger?: ScopedLogger,
-  ) {
+  getAuthUrl(@InjectLogger _logger?: ScopedLogger) {
     const url = new URL(this.authorizeUrl);
     url.searchParams.set('client_id', this.clientId);
     url.searchParams.set('redirect_uri', this.redirectUri);
     url.searchParams.set('scope', this.getScopeFormat(['user'], _logger!));
-    url.searchParams.set('state', sessionId);
 
     return url.toString();
   }

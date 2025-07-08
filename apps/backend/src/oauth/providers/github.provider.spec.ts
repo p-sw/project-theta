@@ -50,8 +50,7 @@ describe('GitHubProvider', () => {
 
   describe('getAuthUrl', () => {
     it('should return a valid GitHub auth URL', () => {
-      const sessionId = random<string>();
-      const url = provider.getAuthUrl(sessionId);
+      const url = provider.getAuthUrl();
 
       const expectedUrl = new URL('https://github.com/login/oauth/authorize');
       expectedUrl.searchParams.set('client_id', mockConfig.GITHUB_CLIENT_ID);
@@ -60,7 +59,6 @@ describe('GitHubProvider', () => {
         mockConfig.GITHUB_REDIRECT_URI,
       );
       expectedUrl.searchParams.set('scope', 'user');
-      expectedUrl.searchParams.set('state', sessionId);
 
       expect(url).toBe(expectedUrl.toString());
     });
