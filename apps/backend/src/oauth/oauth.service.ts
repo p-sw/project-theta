@@ -2,6 +2,7 @@ import {
   InjectLogger,
   Logged,
   LoggedInjectable,
+  Returns,
   ScopedLogger,
 } from 'nestlogged-fastify';
 
@@ -16,6 +17,11 @@ export enum OAuthProvider {
   DISCORD = 'discord',
 }
 
+export interface OAuthSessionInfo {
+  sessionId: string;
+  sessionSecret: string;
+}
+
 @LoggedInjectable()
 export class OAuthService {
   constructor(
@@ -24,6 +30,14 @@ export class OAuthService {
     private readonly githubProvider: GitHubProvider,
     private readonly discordProvider: DiscordProvider,
   ) {}
+
+  @Returns({ id: 'sessionId' })
+  createSessionID(): OAuthSessionInfo {
+    return {
+      sessionId: this.idService.generate(),
+      sessionSecret: this.idService.cryptoGenerate(),
+    };
+  }
 
   getAuthUrl(provider: OAuthProvider.GITHUB, sessionId: string): string;
   getAuthUrl(
