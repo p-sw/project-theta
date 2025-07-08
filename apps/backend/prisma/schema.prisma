@@ -32,6 +32,18 @@ model User {
   discord DiscordOAuth?
 
   mcpConfigs McpConfig[]
+  sessions UserSession[]
+}
+
+/// User session
+model UserSession {
+  id        String   @id
+  userId String @db.VarChar(33)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  expiresAt DateTime?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 /// Github OAuth connection with user
