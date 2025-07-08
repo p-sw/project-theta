@@ -1,3 +1,4 @@
+import fastifyCookie from '@fastify/cookie';
 import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import {
@@ -19,6 +20,7 @@ async function bootstrap() {
     },
   );
   const config = app.get(ConfigService<Config>);
+  await app.register(fastifyCookie);
   await app.listen(config.getOrThrow('BACKEND_PORT', { infer: true }));
 }
 void bootstrap();

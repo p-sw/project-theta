@@ -116,3 +116,8 @@ export function ok<
     data,
   };
 }
+
+export interface HTTPExceptionBase<C extends string, E = void> {
+  code: C;
+  error: E;
+}
