@@ -6,9 +6,6 @@ import {
   ScopedLogger,
 } from 'nestlogged-fastify';
 
-import { PrismaService } from '@/db/prisma.service';
-import { IdService } from '@/id/id.service';
-
 import { DiscordProvider } from './providers/discord.provider';
 import { GitHubProvider } from './providers/github.provider';
 
@@ -20,16 +17,9 @@ export enum OAuthProvider {
 @LoggedInjectable()
 export class OAuthService {
   constructor(
-    private readonly idService: IdService,
-    private readonly prisma: PrismaService,
     private readonly githubProvider: GitHubProvider,
     private readonly discordProvider: DiscordProvider,
   ) {}
-
-  @Returns('sessionId')
-  createSessionID(): string {
-    return this.idService.generate();
-  }
 
   getAuthUrl(provider: OAuthProvider.GITHUB, sessionId: string): string;
   getAuthUrl(
@@ -37,35 +27,19 @@ export class OAuthService {
     sessionId: string,
     prompt: 'consent' | 'none',
   ): string;
+  @Returns('url')
   getAuthUrl(
     @Logged('provider') provider: OAuthProvider,
     @Logged('sessionId') sessionId: string,
     @Logged('prompt') prompt?: 'consent' | 'none',
     @InjectLogger _logger?: ScopedLogger,
-  ) {
+  ): string {
     switch (provider) {
       case OAuthProvider.GITHUB:
         return this.githubProvider.getAuthUrl(sessionId, _logger);
       case OAuthProvider.DISCORD:
         return this.discordProvider.getAuthUrl(sessionId, prompt!, _logger);
     }
-  }
-
-  async isValidSession(
-    state: string,
-    cookieSecret: string,
-    @InjectLogger _logger?: ScopedLogger,
-  ) {
-    const session = await this.prisma.oAuthSession.findUnique({
-      where: {
-        id: state,
-      },
-      select: {
-        secret: true,
-      },
-    });
-
-    return !!session && session.secret === cookieSecret;
   }
 
   async getAccessToken(

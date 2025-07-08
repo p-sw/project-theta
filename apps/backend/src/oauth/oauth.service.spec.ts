@@ -3,7 +3,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ScopedLogger } from 'nestlogged-fastify';
 import { random } from 'typia';
 
-import { PrismaService } from '../db/prisma.service';
 import { IdService } from '../id/id.service';
 import { OAuthProvider, OAuthService } from './oauth.service';
 import { DiscordProvider } from './providers/discord.provider';
@@ -11,7 +10,6 @@ import { GitHubProvider } from './providers/github.provider';
 
 describe('OAuthService', () => {
   let service: OAuthService;
-  let prismaService: PrismaService;
   let githubProvider: GitHubProvider;
   let discordProvider: DiscordProvider;
 
@@ -23,14 +21,6 @@ describe('OAuthService', () => {
           provide: IdService,
           useValue: {
             generate: jest.fn(),
-          },
-        },
-        {
-          provide: PrismaService,
-          useValue: {
-            oAuthSession: {
-              findUnique: jest.fn(),
-            },
           },
         },
         {
@@ -53,7 +43,6 @@ describe('OAuthService', () => {
     }).compile();
 
     service = module.get<OAuthService>(OAuthService);
-    prismaService = module.get<PrismaService>(PrismaService);
     githubProvider = module.get<GitHubProvider>(GitHubProvider);
     discordProvider = module.get<DiscordProvider>(DiscordProvider);
   });
@@ -83,50 +72,6 @@ describe('OAuthService', () => {
         prompt,
         expect.any(ScopedLogger),
       );
-    });
-  });
-
-  describe('isValidSession', () => {
-    it('should return true for a valid session', async () => {
-      const state = random<string>();
-      const cookieSecret = random<string>();
-      (
-        prismaService.oAuthSession.findUnique as jest.Mock
-      ).mockResolvedValueOnce({
-        secret: cookieSecret,
-      });
-
-      const isValid = await service.isValidSession(state, cookieSecret);
-      expect(isValid).toBe(true);
-      // eslint-disable-next-line @typescript-eslint/unbound-method
-      expect(prismaService.oAuthSession.findUnique).toHaveBeenCalledWith({
-        where: { id: state },
-        select: { secret: true },
-      });
-    });
-
-    it('should return false for an invalid session', async () => {
-      const state = random<string>();
-      const cookieSecret = random<string>();
-      (
-        prismaService.oAuthSession.findUnique as jest.Mock
-      ).mockResolvedValueOnce(null);
-
-      const isValid = await service.isValidSession(state, cookieSecret);
-      expect(isValid).toBe(false);
-    });
-
-    it('should return false for a session with a wrong secret', async () => {
-      const state = random<string>();
-      const cookieSecret = random<string>();
-      (
-        prismaService.oAuthSession.findUnique as jest.Mock
-      ).mockResolvedValueOnce({
-        secret: 'right-secret',
-      });
-
-      const isValid = await service.isValidSession(state, cookieSecret);
-      expect(isValid).toBe(false);
     });
   });
 
