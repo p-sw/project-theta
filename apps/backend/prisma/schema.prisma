@@ -56,14 +56,6 @@ model DiscordOAuth {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-/// OAuth session for verification of OAuth request
-model OAuthSession {
-  /// PUBLIC KEY (sent with auth url)
-  id        String   @id @db.VarChar(33)
-  /// PRIVATE KEY (created by initial client, saved in browser cookie, saved in server to verify)
-  secret    String
-}
-
 /// Individual MCP config for user
 model McpConfig {
   mcpId String
