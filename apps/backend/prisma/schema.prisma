@@ -60,7 +60,7 @@ model DiscordOAuth {
 model OAuthSession {
   /// PUBLIC KEY (sent with auth url)
   id        String   @id @db.VarChar(33)
-  /// PRIVATE KEY (saved in browser cookie of initial client)
+  /// PRIVATE KEY (created by initial client, saved in browser cookie, saved in server to verify)
   secret    String
 }
 
