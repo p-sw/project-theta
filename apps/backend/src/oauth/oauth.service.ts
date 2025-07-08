@@ -18,11 +18,6 @@ export class OAuthService {
     private readonly discordProvider: DiscordProvider,
   ) {}
 
-  getAuthUrl(provider: Extract<OAuthProvider, 'github'>): string;
-  getAuthUrl(
-    provider: Extract<OAuthProvider, 'discord'>,
-    prompt: 'consent' | 'none',
-  ): string;
   @Returns('url')
   getAuthUrl(
     @Logged('provider') provider: OAuthProvider,
