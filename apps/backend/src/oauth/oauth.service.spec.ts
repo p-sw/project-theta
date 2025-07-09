@@ -54,7 +54,6 @@ describe('OAuthService', () => {
   describe('getAuthUrl', () => {
     it('should call githubProvider for GITHUB provider', () => {
       service.getAuthUrl('github');
-      // eslint-disable-next-line @typescript-eslint/unbound-method
       expect(githubProvider.getAuthUrl).toHaveBeenCalledWith(
         expect.any(ScopedLogger),
       );
@@ -63,7 +62,6 @@ describe('OAuthService', () => {
     it('should call discordProvider for DISCORD provider', () => {
       const prompt = 'consent';
       service.getAuthUrl('discord', prompt);
-      // eslint-disable-next-line @typescript-eslint/unbound-method
       expect(discordProvider.getAuthUrl).toHaveBeenCalledWith(
         prompt,
         expect.any(ScopedLogger),
@@ -75,7 +73,6 @@ describe('OAuthService', () => {
     it('should call githubProvider for GITHUB provider', async () => {
       const code = random<string>();
       await service.getAccessToken('github', code);
-      // eslint-disable-next-line @typescript-eslint/unbound-method
       expect(githubProvider.getAccessToken).toHaveBeenCalledWith(
         { code },
         expect.any(ScopedLogger),
@@ -85,7 +82,6 @@ describe('OAuthService', () => {
     it('should call discordProvider for DISCORD provider', async () => {
       const code = random<string>();
       await service.getAccessToken('discord', code);
-      // eslint-disable-next-line @typescript-eslint/unbound-method
       expect(discordProvider.getAccessToken).toHaveBeenCalledWith(
         { code },
         expect.any(ScopedLogger),
@@ -97,7 +93,6 @@ describe('OAuthService', () => {
     it('should call githubProvider for GITHUB provider', async () => {
       const accessToken = random<string>();
       await service.getUserInfo('github', accessToken);
-      // eslint-disable-next-line @typescript-eslint/unbound-method
       expect(githubProvider.getUserInfo).toHaveBeenCalledWith(
         accessToken,
         expect.any(ScopedLogger),
@@ -107,7 +102,6 @@ describe('OAuthService', () => {
     it('should call discordProvider for DISCORD provider', async () => {
       const accessToken = random<string>();
       await service.getUserInfo('discord', accessToken);
-      // eslint-disable-next-line @typescript-eslint/unbound-method
       expect(discordProvider.getUserInfo).toHaveBeenCalledWith(
         accessToken,
         expect.any(ScopedLogger),
