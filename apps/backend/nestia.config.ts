@@ -22,5 +22,42 @@ const NESTIA_CONFIG: INestiaConfig = {
   clone: true,
   propagate: true,
   distribute: '../../packages/sdk',
+  swagger: {
+    openapi: '3.1',
+    output: 'api/swagger.json',
+    operationId: (props) => {
+      return `${props.class}.${props.function}`;
+    },
+    security: {
+      bearer: {
+        type: 'apiKey',
+        name: 'Authorization',
+        in: 'header',
+      },
+    },
+    servers: [
+      {
+        url: 'http://localhost:3000',
+        description: 'Local server',
+      },
+    ],
+    tags: [
+      {
+        name: 'Auth',
+        description: 'Authentication endpoints',
+      },
+      {
+        name: 'OAuth',
+        description: 'OAuth endpoints',
+      },
+    ],
+    beautify: true,
+    additional: true,
+    info: {
+      title: 'Backend',
+      description: 'Backend API',
+      version: '0.0.1',
+    },
+  },
 };
 export default NESTIA_CONFIG;

@@ -1,0 +1,5 @@
+rules:
+  operation-4xx-response: 'off'
+  no-server-example.com: 'off'
+  info-license-strict: 'off'
+  security-defined: 'off'

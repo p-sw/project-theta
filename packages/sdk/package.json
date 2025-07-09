@@ -6,7 +6,7 @@
   "typings": "lib/index.d.ts",
   "scripts": {
     "build": "npm run build:sdk && npm run compile",
-    "build:sdk": "rimraf ../../apps/backend/api/functional && cd ../../apps/backend && pnpx nestia sdk && cd ../../packages/sdk",
+    "build:sdk": "rimraf ../../apps/backend/api/functional && cd ../../apps/backend && nestia sdk && cd ../../packages/sdk",
     "compile": "rimraf lib && tsc"
   },
   "license": "MIT",

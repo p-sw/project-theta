@@ -36,8 +36,8 @@ export class UserController {
    * Starts Authentication OAuth flow by giving the user the URL to redirect to.
    *
    * @summary Request OAuth (Auth)
-   * @tag Auth - Authentication endpoints
-   * @tag OAuth - OAuth endpoints
+   * @tag Auth
+   * @tag OAuth
    */
   @TypedRoute.Get('auth/:provider')
   @Returns('url')
@@ -54,8 +54,8 @@ export class UserController {
    * If user is not found, automatically creates a new user and sign in.
    *
    * @summary Submit OAuth (Auth)
-   * @tag Auth - Authentication endpoints
-   * @tag OAuth - OAuth endpoints
+   * @tag Auth
+   * @tag OAuth
    */
   @TypedRoute.Get('auth/:provider/submit')
   @TypedException<SubmitOAuthSession.InvalidOAuthCodeException>({
