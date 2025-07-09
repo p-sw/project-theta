@@ -4,10 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "init": "pnpm install && pnpm sdk build",
     "env:dev": "dotenvx run -q -f .env.development",
     "env:local": "dotenvx run -q -f .env.local --ignore=MISSING_ENV_FILE",
     "front": "pnpm run env:dev -- pnpm run env:local -- pnpm --filter frontend",
-    "back": "pnpm run env:dev -- pnpm run env:local -- pnpm --filter backend"
+    "back": "pnpm run env:dev -- pnpm run env:local -- pnpm --filter backend",
+    "sdk": "pnpm run env:dev -- pnpm run env:local -- pnpm --filter @shared/sdk"
   },
   "keywords": [],
   "author": "",

@@ -18,6 +18,7 @@ async function bootstrap() {
       logger: new ConsoleLogger(),
     },
   );
+  app.setGlobalPrefix('api');
   const config = app.get(ConfigService);
   await app.register(fastifyCookie);
   await app.listen(config.get('BACKEND_PORT'));

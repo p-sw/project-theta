@@ -1,0 +1,26 @@
+{
+  "name": "@shared/sdk",
+  "version": "0.0.0",
+  "description": "Backend API SDK",
+  "main": "lib/index.js",
+  "typings": "lib/index.d.ts",
+  "scripts": {
+    "build": "npm run build:sdk && npm run compile",
+    "build:sdk": "rimraf ../../apps/backend/api/functional && cd ../../apps/backend && pnpx nestia sdk && cd ../../packages/sdk",
+    "compile": "rimraf lib && tsc"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "rimraf": "^5.0.0",
+    "typescript": "^5.4.2",
+    "ts-patch": "^3.1.0"
+  },
+  "dependencies": {
+    "@nestia/fetcher": "^4.2.0",
+    "typia": "^8.0.0"
+  },
+  "files": [
+    "lib",
+    "package.json"
+  ]
+}

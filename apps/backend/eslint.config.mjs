@@ -26,6 +26,7 @@ export default tseslint.config(
         tsconfigRootDir: dirname(fileURLToPath(import.meta.url)),
       },
     },
+    ignores: ['api/**/*'],
   },
   {
     rules: {
