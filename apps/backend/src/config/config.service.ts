@@ -1,3 +1,5 @@
+import { Injectable } from '@nestjs/common';
+
 import typia from 'typia';
 
 type Numeric = typia.tags.Pattern<'^[0-9]+$'>;
@@ -27,6 +29,15 @@ function transformer(config: TConfig): Config {
   };
 }
 
-export default function envLoader() {
+export default function envLoader(): Config {
   return transformer(typia.assert<TConfig>(process.env));
+}
+
+@Injectable()
+export class ConfigService {
+  constructor(private readonly config: Config) {}
+
+  get<K extends keyof Config>(key: K): Config[K] {
+    return this.config[key];
+  }
 }

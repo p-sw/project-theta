@@ -1,7 +1,8 @@
-import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 
 import { random } from 'typia';
+
+import { ConfigService } from '@/config/config.service';
 
 import { GitHubProvider } from './github.provider';
 import {
@@ -27,9 +28,7 @@ describe('GitHubProvider', () => {
         {
           provide: ConfigService,
           useValue: {
-            getOrThrow: jest.fn(
-              (key: keyof typeof mockConfig) => mockConfig[key],
-            ),
+            get: jest.fn((key: keyof typeof mockConfig) => mockConfig[key]),
           },
         },
       ],

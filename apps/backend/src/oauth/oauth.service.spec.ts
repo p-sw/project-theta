@@ -4,7 +4,7 @@ import { ScopedLogger } from 'nestlogged-fastify';
 import { random } from 'typia';
 
 import { IdService } from '../id/id.service';
-import { OAuthProvider, OAuthService } from './oauth.service';
+import { OAuthService } from './oauth.service';
 import { DiscordProvider } from './providers/discord.provider';
 import { GitHubProvider } from './providers/github.provider';
 
@@ -53,7 +53,7 @@ describe('OAuthService', () => {
 
   describe('getAuthUrl', () => {
     it('should call githubProvider for GITHUB provider', () => {
-      service.getAuthUrl(OAuthProvider.GITHUB);
+      service.getAuthUrl('github');
       // eslint-disable-next-line @typescript-eslint/unbound-method
       expect(githubProvider.getAuthUrl).toHaveBeenCalledWith(
         expect.any(ScopedLogger),
@@ -62,7 +62,7 @@ describe('OAuthService', () => {
 
     it('should call discordProvider for DISCORD provider', () => {
       const prompt = 'consent';
-      service.getAuthUrl(OAuthProvider.DISCORD, prompt);
+      service.getAuthUrl('discord', prompt);
       // eslint-disable-next-line @typescript-eslint/unbound-method
       expect(discordProvider.getAuthUrl).toHaveBeenCalledWith(
         prompt,
@@ -74,7 +74,7 @@ describe('OAuthService', () => {
   describe('getAccessToken', () => {
     it('should call githubProvider for GITHUB provider', async () => {
       const code = random<string>();
-      await service.getAccessToken(OAuthProvider.GITHUB, code);
+      await service.getAccessToken('github', code);
       // eslint-disable-next-line @typescript-eslint/unbound-method
       expect(githubProvider.getAccessToken).toHaveBeenCalledWith(
         { code },
@@ -84,7 +84,7 @@ describe('OAuthService', () => {
 
     it('should call discordProvider for DISCORD provider', async () => {
       const code = random<string>();
-      await service.getAccessToken(OAuthProvider.DISCORD, code);
+      await service.getAccessToken('discord', code);
       // eslint-disable-next-line @typescript-eslint/unbound-method
       expect(discordProvider.getAccessToken).toHaveBeenCalledWith(
         { code },
@@ -96,7 +96,7 @@ describe('OAuthService', () => {
   describe('getUserInfo', () => {
     it('should call githubProvider for GITHUB provider', async () => {
       const accessToken = random<string>();
-      await service.getUserInfo(OAuthProvider.GITHUB, accessToken);
+      await service.getUserInfo('github', accessToken);
       // eslint-disable-next-line @typescript-eslint/unbound-method
       expect(githubProvider.getUserInfo).toHaveBeenCalledWith(
         accessToken,
@@ -106,7 +106,7 @@ describe('OAuthService', () => {
 
     it('should call discordProvider for DISCORD provider', async () => {
       const accessToken = random<string>();
-      await service.getUserInfo(OAuthProvider.DISCORD, accessToken);
+      await service.getUserInfo('discord', accessToken);
       // eslint-disable-next-line @typescript-eslint/unbound-method
       expect(discordProvider.getUserInfo).toHaveBeenCalledWith(
         accessToken,

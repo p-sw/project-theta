@@ -13,8 +13,14 @@ import {
   OAuthProvider,
   UserInfoResponse,
 } from '@/oauth/oauth.types';
-import { DiscordAccessTokenReturn, DiscordUserInfoResponse } from '@/oauth/providers/discord.types';
-import { GithubAccessTokenCodeReturn, GithubUserInfoResponse } from '@/oauth/providers/github.types';
+import {
+  DiscordAccessTokenReturn,
+  DiscordUserInfoResponse,
+} from '@/oauth/providers/discord.types';
+import {
+  GithubAccessTokenCodeReturn,
+  GithubUserInfoResponse,
+} from '@/oauth/providers/github.types';
 
 @LoggedInjectable()
 export class UserService {
@@ -84,15 +90,18 @@ export class UserService {
   @Returns('userId')
   async createUserByOAuth(
     @Logged('provider') provider: OAuthProvider,
-    @Logged('oauthUserId') oauthUserId: DiscordUserInfoResponse['id'] | GithubUserInfoResponse['id'],
+    @Logged('oauthUserId')
+    oauthUserId: DiscordUserInfoResponse['id'] | GithubUserInfoResponse['id'],
     tokenInfo: AccessTokenReturn,
     @InjectLogger _logger: ScopedLogger,
   ): Promise<string> {
     const saveForDiscord = async () => {
-      const discordTokenInfo = <DiscordAccessTokenReturn>tokenInfo;
+      const discordTokenInfo = tokenInfo as DiscordAccessTokenReturn;
       const id = this.idService.generate();
-      const discordUserId = <DiscordUserInfoResponse['id']>oauthUserId;
-      _logger.log(`creating user for discord oauth, id ${id}, discord id ${discordUserId}`);
+      const discordUserId = oauthUserId as DiscordUserInfoResponse['id'];
+      _logger.log(
+        `creating user for discord oauth, id ${id}, discord id ${discordUserId}`,
+      );
       await this.prisma.user.create({
         data: {
           id,
@@ -103,8 +112,8 @@ export class UserService {
               expiresAt: new Date(discordTokenInfo.expiresAt),
               refreshToken: discordTokenInfo.refreshToken,
               scope: discordTokenInfo.scope,
-            }
-          }
+            },
+          },
         },
       });
 
@@ -112,10 +121,12 @@ export class UserService {
     };
 
     const saveForGithub = async () => {
-      const githubTokenInfo = <GithubAccessTokenCodeReturn>tokenInfo;
+      const githubTokenInfo = tokenInfo as GithubAccessTokenCodeReturn;
       const id = this.idService.generate();
-      const githubUserId = <GithubUserInfoResponse['id']>oauthUserId;
-      _logger.log(`creating user for github oauth, id ${id}, github id ${githubUserId}`);
+      const githubUserId = oauthUserId as GithubUserInfoResponse['id'];
+      _logger.log(
+        `creating user for github oauth, id ${id}, github id ${githubUserId}`,
+      );
       await this.prisma.user.create({
         data: {
           id,
@@ -124,13 +135,13 @@ export class UserService {
               id: githubUserId.toString(),
               accessToken: githubTokenInfo.accessToken,
               scope: githubTokenInfo.scope,
-            }
-          }
-        }
-      })
+            },
+          },
+        },
+      });
 
       return id;
-    }
+    };
 
     if (provider === 'discord') {
       return saveForDiscord();
@@ -150,8 +161,8 @@ export class UserService {
       data: {
         id,
         userId,
-      }
-    })
+      },
+    });
 
     return id;
   }

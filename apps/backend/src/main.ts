@@ -1,5 +1,4 @@
 import fastifyCookie from '@fastify/cookie';
-import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import {
   FastifyAdapter,
@@ -9,7 +8,7 @@ import {
 import { ConsoleLogger } from 'nestlogged-fastify';
 
 import { AppModule } from './app.module';
-import { Config } from './config';
+import { ConfigService } from './config/config.service';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestFastifyApplication>(
@@ -19,8 +18,8 @@ async function bootstrap() {
       logger: new ConsoleLogger(),
     },
   );
-  const config = app.get(ConfigService<Config>);
+  const config = app.get(ConfigService);
   await app.register(fastifyCookie);
-  await app.listen(config.getOrThrow('BACKEND_PORT', { infer: true }));
+  await app.listen(config.get('BACKEND_PORT'));
 }
 void bootstrap();

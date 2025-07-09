@@ -1,5 +1,3 @@
-import { ConfigService } from '@nestjs/config';
-
 import {
   InjectLogger,
   Logged,
@@ -9,7 +7,7 @@ import {
   ScopedLogger,
 } from 'nestlogged-fastify';
 
-import { Config } from '@/config';
+import { ConfigService } from '@/config/config.service';
 import { ErrorFunc, PossiblyError, SuccessFunc, error, ok } from '@/error';
 
 import { OAuthRedirectUriParams } from '../oauth.types';
@@ -33,16 +31,10 @@ export class GitHubProvider {
   private readonly clientSecret: string;
   private readonly redirectUri: string;
 
-  constructor(private readonly configService: ConfigService<Config>) {
-    this.clientId = this.configService.getOrThrow('GITHUB_CLIENT_ID', {
-      infer: true,
-    });
-    this.clientSecret = this.configService.getOrThrow('GITHUB_CLIENT_SECRET', {
-      infer: true,
-    });
-    this.redirectUri = this.configService.getOrThrow('GITHUB_REDIRECT_URI', {
-      infer: true,
-    });
+  constructor(private readonly configService: ConfigService) {
+    this.clientId = this.configService.get('GITHUB_CLIENT_ID');
+    this.clientSecret = this.configService.get('GITHUB_CLIENT_SECRET');
+    this.redirectUri = this.configService.get('GITHUB_REDIRECT_URI');
   }
 
   @Returns('scopestring')
