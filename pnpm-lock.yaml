@@ -88,6 +88,9 @@ importers:
       '@redocly/cli':
         specifier: ^1.34.4
         version: 1.34.4(ajv@8.17.1)
+      '@shared/sdk':
+        specifier: workspace:*
+        version: link:../../packages/sdk
       '@swc/cli':
         specifier: ^0.6.0
         version: 0.6.0(@swc/core@1.12.11)(chokidar@4.0.3)
@@ -163,6 +166,9 @@ importers:
       '@radix-ui/react-slot':
         specifier: ^1.2.3
         version: 1.2.3(@types/react@19.1.8)(react@19.1.0)
+      '@shared/sdk':
+        specifier: workspace:*
+        version: link:../../packages/sdk
       '@tailwindcss/postcss':
         specifier: ^4.1.11
         version: 4.1.11

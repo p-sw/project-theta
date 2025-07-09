@@ -11,6 +11,7 @@
     "shadcn": "shadcn"
   },
   "dependencies": {
+    "@shared/sdk": "workspace:*",
     "@radix-ui/react-slot": "^1.2.3",
     "@tailwindcss/postcss": "^4.1.11",
     "@tanstack/react-router": "^1.121.2",
