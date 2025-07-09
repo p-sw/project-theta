@@ -3,7 +3,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ScopedLogger } from 'nestlogged-fastify';
 import { random } from 'typia';
 
-import { IdService } from '../id/id.service';
 import { OAuthService } from './oauth.service';
 import { DiscordProvider } from './providers/discord.provider';
 import { GitHubProvider } from './providers/github.provider';
@@ -17,12 +16,6 @@ describe('OAuthService', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         OAuthService,
-        {
-          provide: IdService,
-          useValue: {
-            generate: jest.fn(),
-          },
-        },
         {
           provide: GitHubProvider,
           useValue: {

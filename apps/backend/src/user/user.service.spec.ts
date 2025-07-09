@@ -1,6 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
 
-import { ScopedLogger } from 'nestlogged-fastify';
 import { random } from 'typia';
 
 import { PrismaService } from '@/db/prisma.service';
@@ -20,7 +19,6 @@ describe('UserService', () => {
   let service: UserService;
   let prisma: PrismaService;
   let idService: IdService;
-
   const mockPrisma = {
     discordOAuth: {
       findUnique: jest.fn(),
@@ -36,10 +34,6 @@ describe('UserService', () => {
     },
   };
 
-  const mockIdService = {
-    generate: jest.fn(),
-  };
-
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -47,10 +41,6 @@ describe('UserService', () => {
         {
           provide: PrismaService,
           useValue: mockPrisma,
-        },
-        {
-          provide: IdService,
-          useValue: mockIdService,
         },
       ],
     }).compile();
@@ -69,8 +59,6 @@ describe('UserService', () => {
   });
 
   describe('getUserIdByOAuth', () => {
-    const mockLogger = { log: jest.fn() } as unknown as ScopedLogger;
-
     it('should return user ID for discord user if found', async () => {
       const userData = random<DiscordUserInfoResponse>();
       const userId = random<string>();
@@ -79,11 +67,7 @@ describe('UserService', () => {
         user: { id: userId },
       });
 
-      const result = await service.getUserIdByOAuth(
-        'discord',
-        userData,
-        mockLogger,
-      );
+      const result = await service.getUserIdByOAuth('discord', userData);
 
       expect(result).toBe(userId);
       expect(prisma.discordOAuth.findUnique).toHaveBeenCalledWith({
@@ -97,11 +81,7 @@ describe('UserService', () => {
 
       mockPrisma.discordOAuth.findUnique.mockResolvedValueOnce(null);
 
-      const result = await service.getUserIdByOAuth(
-        'discord',
-        userData,
-        mockLogger,
-      );
+      const result = await service.getUserIdByOAuth('discord', userData);
 
       expect(result).toBeNull();
     });
@@ -114,11 +94,7 @@ describe('UserService', () => {
         user: { id: userId },
       });
 
-      const result = await service.getUserIdByOAuth(
-        'github',
-        userData,
-        mockLogger,
-      );
+      const result = await service.getUserIdByOAuth('github', userData);
 
       expect(result).toBe(userId);
       expect(prisma.githubOAuth.findUnique).toHaveBeenCalledWith({
@@ -132,31 +108,22 @@ describe('UserService', () => {
 
       mockPrisma.githubOAuth.findUnique.mockResolvedValueOnce(null);
 
-      const result = await service.getUserIdByOAuth(
-        'github',
-        userData,
-        mockLogger,
-      );
+      const result = await service.getUserIdByOAuth('github', userData);
 
       expect(result).toBeNull();
     });
   });
 
   describe('createUserByOAuth', () => {
-    const mockLogger = { log: jest.fn() } as unknown as ScopedLogger;
-
     it('should create a new user via discord oauth', async () => {
       const oauthUserId = random<DiscordUserInfoResponse['id']>();
       const tokenInfo = random<DiscordAccessTokenReturn>();
       const newUserId = random<string>();
 
-      mockIdService.generate.mockReturnValue(newUserId);
-
       const result = await service.createUserByOAuth(
         'discord',
         oauthUserId,
         tokenInfo,
-        mockLogger,
       );
 
       expect(result).toBe(newUserId);
@@ -182,13 +149,10 @@ describe('UserService', () => {
       const tokenInfo = random<GithubAccessTokenCodeReturn>();
       const newUserId = random<string>();
 
-      mockIdService.generate.mockReturnValue(newUserId);
-
       const result = await service.createUserByOAuth(
         'github',
         oauthUserId,
         tokenInfo,
-        mockLogger,
       );
 
       expect(result).toBe(newUserId);
@@ -209,15 +173,11 @@ describe('UserService', () => {
   });
 
   describe('createSession', () => {
-    const mockLogger = { log: jest.fn() } as unknown as ScopedLogger;
-
     it('should create a user session and return session id', async () => {
       const userId = random<string>();
       const newSessionId = random<string>();
 
-      mockIdService.generate.mockReturnValue(newSessionId);
-
-      const result = await service.createSession(userId, mockLogger);
+      const result = await service.createSession(userId);
 
       expect(result).toBe(newSessionId);
       expect(idService.generate).toHaveBeenCalledTimes(1);
