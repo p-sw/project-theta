@@ -38,6 +38,9 @@ export class UserController {
    * @summary Request OAuth (Auth)
    * @tag Auth
    * @tag OAuth
+   *
+   * @param provider The OAuth provider to use.
+   * @returns The URL to redirect to for OAuth authentication.
    */
   @TypedRoute.Get('auth/:provider')
   @Returns('url')
@@ -56,6 +59,10 @@ export class UserController {
    * @summary Submit OAuth (Auth)
    * @tag Auth
    * @tag OAuth
+   *
+   * @param provider The OAuth provider to use.
+   * @param query URL search params from OAuth provider.
+   * @returns Session ID will be set in cookie as httpOnly.
    */
   @TypedRoute.Get('auth/:provider/submit')
   @TypedException<SubmitOAuthSession.InvalidOAuthCodeException>({
