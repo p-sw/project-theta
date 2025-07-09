@@ -15,7 +15,7 @@ const NESTIA_CONFIG: INestiaConfig = {
       new FastifyAdapter(),
     );
     app.setGlobalPrefix('api');
-    app.use(fastifyCookie);
+    await app.register(fastifyCookie);
     return app;
   },
   output: 'api',
