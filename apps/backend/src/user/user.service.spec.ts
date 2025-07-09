@@ -90,6 +90,10 @@ describe('UserService', () => {
       const result = await service.getUserIdByOAuth('discord', userData);
 
       expect(result).toBeNull();
+      expect(prisma.discordOAuth.findUnique).toHaveBeenCalledWith({
+        where: { id: userData.id },
+        select: { user: { select: { id: true } } },
+      });
     });
 
     it('should return user ID for github user if found', async () => {
@@ -117,6 +121,10 @@ describe('UserService', () => {
       const result = await service.getUserIdByOAuth('github', userData);
 
       expect(result).toBeNull();
+      expect(prisma.githubOAuth.findUnique).toHaveBeenCalledWith({
+        where: { id: userData.id.toString() },
+        select: { user: { select: { id: true } } },
+      });
     });
   });
 
