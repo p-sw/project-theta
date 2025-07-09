@@ -33,6 +33,9 @@ describe('UserService', () => {
       create: jest.fn(),
     },
   };
+  const mockIdService = {
+    generate: jest.fn(),
+  };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -40,9 +43,7 @@ describe('UserService', () => {
         UserService,
         {
           provide: IdService,
-          useValue: {
-            generate: jest.fn(),
-          },
+          useValue: mockIdService,
         },
         {
           provide: PrismaService,
@@ -134,6 +135,8 @@ describe('UserService', () => {
       const tokenInfo = random<DiscordAccessTokenReturn>();
       const newUserId = random<string>();
 
+      mockIdService.generate.mockReturnValueOnce(newUserId);
+
       const result = await service.createUserByOAuth(
         'discord',
         oauthUserId,
@@ -163,6 +166,8 @@ describe('UserService', () => {
       const tokenInfo = random<GithubAccessTokenCodeReturn>();
       const newUserId = random<string>();
 
+      mockIdService.generate.mockReturnValueOnce(newUserId);
+
       const result = await service.createUserByOAuth(
         'github',
         oauthUserId,
@@ -190,6 +195,8 @@ describe('UserService', () => {
     it('should create a user session and return session id', async () => {
       const userId = random<string>();
       const newSessionId = random<string>();
+
+      mockIdService.generate.mockReturnValueOnce(newSessionId);
 
       const result = await service.createSession(userId);
 
