@@ -39,6 +39,12 @@ describe('UserService', () => {
       providers: [
         UserService,
         {
+          provide: IdService,
+          useValue: {
+            generate: jest.fn(),
+          },
+        },
+        {
           provide: PrismaService,
           useValue: mockPrisma,
         },
