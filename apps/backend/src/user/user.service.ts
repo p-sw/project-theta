@@ -34,12 +34,12 @@ export class UserService {
     @Logged('provider') provider: OAuthProvider,
     @Logged({ oauthUserId: 'id' })
     userData: UserInfoResponse,
-    @InjectLogger _logger: ScopedLogger,
+    @InjectLogger _logger?: ScopedLogger,
   ): Promise<string | null> {
     let id: string;
 
     const findForDiscord = async () => {
-      _logger.log('finding user in discord oauth');
+      _logger?.log('finding user in discord oauth');
       const discordOAuth = await this.prisma.discordOAuth.findUnique({
         where: {
           id,
@@ -58,7 +58,7 @@ export class UserService {
     };
 
     const findForGithub = async () => {
-      _logger.log('finding user in github oauth');
+      _logger?.log('finding user in github oauth');
       const githubOAuth = await this.prisma.githubOAuth.findUnique({
         where: {
           id,
@@ -93,13 +93,13 @@ export class UserService {
     @Logged('oauthUserId')
     oauthUserId: DiscordUserInfoResponse['id'] | GithubUserInfoResponse['id'],
     tokenInfo: AccessTokenReturn,
-    @InjectLogger _logger: ScopedLogger,
+    @InjectLogger _logger?: ScopedLogger,
   ): Promise<string> {
     const saveForDiscord = async () => {
       const discordTokenInfo = tokenInfo as DiscordAccessTokenReturn;
       const id = this.idService.generate();
       const discordUserId = oauthUserId as DiscordUserInfoResponse['id'];
-      _logger.log(
+      _logger?.log(
         `creating user for discord oauth, id ${id}, discord id ${discordUserId}`,
       );
       await this.prisma.user.create({
@@ -124,7 +124,7 @@ export class UserService {
       const githubTokenInfo = tokenInfo as GithubAccessTokenCodeReturn;
       const id = this.idService.generate();
       const githubUserId = oauthUserId as GithubUserInfoResponse['id'];
-      _logger.log(
+      _logger?.log(
         `creating user for github oauth, id ${id}, github id ${githubUserId}`,
       );
       await this.prisma.user.create({
@@ -153,10 +153,10 @@ export class UserService {
 
   async createSession(
     @Logged('userId') userId: string,
-    @InjectLogger _logger: ScopedLogger,
+    @InjectLogger _logger?: ScopedLogger,
   ): Promise<string> {
     const id = this.idService.generate();
-    _logger.log(`creating session for user ${userId}, id ${id}`);
+    _logger?.log(`creating session for user ${userId}, id ${id}`);
     await this.prisma.userSession.create({
       data: {
         id,
