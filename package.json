@@ -9,7 +9,8 @@
     "env:local": "dotenvx run -q -f .env.local --ignore=MISSING_ENV_FILE",
     "front": "pnpm run env:dev -- pnpm run env:local -- pnpm --filter frontend",
     "back": "pnpm run env:dev -- pnpm run env:local -- pnpm --filter backend",
-    "sdk": "pnpm run env:dev -- pnpm run env:local -- pnpm --filter @shared/sdk"
+    "sdk": "pnpm run env:dev -- pnpm run env:local -- pnpm --filter @shared/sdk",
+    "all": "pnpm run env:dev -- pnpm run env:local -- pnpm --recursive"
   },
   "keywords": [],
   "author": "",
