@@ -1,6 +1,7 @@
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { APP_GUARD } from '@nestjs/core';
 
+import { AppMiddleware } from './app.middleware';
 import { AuthGuard } from './auth/auth.guard';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule } from './config/config.module';
@@ -26,6 +27,11 @@ import { UserModule } from './user/user.module';
       provide: APP_GUARD,
       useClass: AuthGuard,
     },
+    AppMiddleware,
   ],
 })
-export class AppModule {}
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer.apply(AppMiddleware).forRoutes('*paths');
+  }
+}

@@ -7,6 +7,7 @@ type Numeric = typia.tags.Pattern<'^[0-9]+$'>;
 export interface TConfig {
   BACKEND_HOST: string;
   BACKEND_PORT: string & Numeric;
+  FRONTEND_ORIGIN: string;
 
   DISCORD_CLIENT_ID: string;
   DISCORD_CLIENT_SECRET: string;
@@ -34,10 +35,10 @@ export default function envLoader(): Config {
 }
 
 @Injectable()
-export class ConfigService {
-  constructor(private readonly config: Config) {}
+export class ConfigService<C extends Config = Config> {
+  constructor(private readonly config: C) {}
 
-  get<K extends keyof Config>(key: K): Config[K] {
+  get<K extends keyof C>(key: K): C[K] {
     return this.config[key];
   }
 }
