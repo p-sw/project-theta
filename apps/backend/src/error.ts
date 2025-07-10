@@ -1,3 +1,5 @@
+import { HttpStatus, HttpException as _HttpException } from '@nestjs/common';
+
 export type PossiblyError<E extends Record<string, unknown>, S> =
   | {
       [K in keyof E]: {
@@ -120,4 +122,124 @@ export function ok<
 export interface HTTPExceptionBase<C extends string, E = void> {
   code: C;
   error: E;
+}
+
+export class HTTPException<
+  E extends HTTPExceptionBase<string, unknown>,
+> extends _HttpException {
+  constructor(code: E['code'], error: E['error'], status: number) {
+    super(HTTPException.createBody({ code, error }), status);
+  }
+}
+
+export class BadRequestException<
+  E extends HTTPExceptionBase<string, unknown>,
+> extends HTTPException<E> {
+  constructor(code: E['code'], error: E['error']) {
+    super(code, error, HttpStatus.BAD_REQUEST);
+  }
+}
+
+export class UnauthorizedException<
+  E extends HTTPExceptionBase<string, unknown>,
+> extends HTTPException<E> {
+  constructor(code: E['code'], error: E['error']) {
+    super(code, error, HttpStatus.UNAUTHORIZED);
+  }
+}
+
+export class NotFoundException<
+  E extends HTTPExceptionBase<string, unknown>,
+> extends HTTPException<E> {
+  constructor(code: E['code'], error: E['error']) {
+    super(code, error, HttpStatus.NOT_FOUND);
+  }
+}
+
+export class ForbiddenException<
+  E extends HTTPExceptionBase<string, unknown>,
+> extends HTTPException<E> {
+  constructor(code: E['code'], error: E['error']) {
+    super(code, error, HttpStatus.FORBIDDEN);
+  }
+}
+
+export class NotAcceptableException<
+  E extends HTTPExceptionBase<string, unknown>,
+> extends HTTPException<E> {
+  constructor(code: E['code'], error: E['error']) {
+    super(code, error, HttpStatus.NOT_ACCEPTABLE);
+  }
+}
+
+export class RequestTimeoutException<
+  E extends HTTPExceptionBase<string, unknown>,
+> extends HTTPException<E> {
+  constructor(code: E['code'], error: E['error']) {
+    super(code, error, HttpStatus.REQUEST_TIMEOUT);
+  }
+}
+
+export class ConflictException<
+  E extends HTTPExceptionBase<string, unknown>,
+> extends HTTPException<E> {
+  constructor(code: E['code'], error: E['error']) {
+    super(code, error, HttpStatus.CONFLICT);
+  }
+}
+
+export class GoneException<
+  E extends HTTPExceptionBase<string, unknown>,
+> extends HTTPException<E> {
+  constructor(code: E['code'], error: E['error']) {
+    super(code, error, HttpStatus.GONE);
+  }
+}
+
+export class HttpVersionNotSupportedException<
+  E extends HTTPExceptionBase<string, unknown>,
+> extends HTTPException<E> {
+  constructor(code: E['code'], error: E['error']) {
+    super(code, error, HttpStatus.HTTP_VERSION_NOT_SUPPORTED);
+  }
+}
+
+export class PayloadTooLargeException<
+  E extends HTTPExceptionBase<string, unknown>,
+> extends HTTPException<E> {
+  constructor(code: E['code'], error: E['error']) {
+    super(code, error, HttpStatus.PAYLOAD_TOO_LARGE);
+  }
+}
+
+export class UnsupportedMediaTypeException<
+  E extends HTTPExceptionBase<string, unknown>,
+> extends HTTPException<E> {
+  constructor(code: E['code'], error: E['error']) {
+    super(code, error, HttpStatus.UNSUPPORTED_MEDIA_TYPE);
+  }
+}
+
+export class UnprocessableEntityException<
+  E extends HTTPExceptionBase<string, unknown>,
+> extends HTTPException<E> {
+  constructor(code: E['code'], error: E['error']) {
+    super(code, error, HttpStatus.UNPROCESSABLE_ENTITY);
+  }
+}
+
+export class InternalServerErrorException<
+  E extends HTTPExceptionBase<string, unknown>,
+> extends HTTPException<E> {
+  constructor(code: E['code'], error: E['error']) {
+    super(code, error, HttpStatus.INTERNAL_SERVER_ERROR);
+  }
+}
+
+export class NotImplementedException<
+  E extends HTTPExceptionBase<string, unknown>,
+> extends HTTPException<E> {
+  constructor(code: E['code'], error: E['error']) {
+    super(code, error, HttpStatus.NOT_IMPLEMENTED);
+  }
 }
