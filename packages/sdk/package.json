@@ -2,8 +2,9 @@
   "name": "@shared/sdk",
   "version": "0.0.0",
   "description": "Backend API SDK",
-  "main": "lib/index.js",
-  "typings": "lib/index.d.ts",
+  "type": "module",
+  "main": "lib/functional/index.js",
+  "typings": "lib/functional/index.d.ts",
   "scripts": {
     "build": "npm run build:sdk && npm run compile",
     "build:sdk": "rimraf ../../apps/backend/api/functional && cd ../../apps/backend && pnpm nestia sdk && cd ../../packages/sdk",
