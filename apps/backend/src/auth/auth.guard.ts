@@ -50,3 +50,11 @@ export class AuthGuard implements CanActivate {
     return true;
   }
 }
+export namespace AuthGuard {
+  export type InvalidSessionException = HTTPExceptionBase<
+    'invalid_session',
+    {
+      session?: string;
+    }
+  >;
+}

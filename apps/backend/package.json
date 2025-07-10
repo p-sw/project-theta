@@ -19,7 +19,7 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "prepare": "ts-patch install",
-    "docs": "nestia swagger && redocly",
+    "docs": "nestia swagger && node scripts/docs-patcher.mjs && redocly",
     "docs:serve": "pnpm run docs preview-docs api/swagger.json",
     "docs:lint": "pnpm run docs lint api/swagger.json",
     "db": "prisma",
