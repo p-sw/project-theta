@@ -1,6 +1,8 @@
 packages:
-  - "packages/*"
-  - "apps/*"
+  - 'packages/*'
+  - 'apps/*'
 
 publicHoistPattern:
-  - "fastify"
+  - 'fastify'
+
+shellEmulator: true
