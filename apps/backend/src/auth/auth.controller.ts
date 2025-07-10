@@ -150,4 +150,9 @@ export class AuthController {
 
     return;
   }
+
+  @TypedRoute.Get('verify')
+  verifySession(@InjectLogger _logger: ScopedLogger) {
+    return;
+  }
 }
