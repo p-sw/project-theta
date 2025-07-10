@@ -10,7 +10,7 @@
     "front": "pnpm run env:dev -- pnpm run env:local -- pnpm --filter frontend",
     "back": "pnpm run env:dev -- pnpm run env:local -- pnpm --filter backend",
     "sdk": "pnpm run env:dev -- pnpm run env:local -- pnpm --filter @shared/sdk",
-    "all": "pnpm run env:dev -- pnpm run env:local -- pnpm --recursive"
+    "all": "pnpm run env:dev -- pnpm run env:local -- pnpm --recursive --stream --parallel "
   },
   "keywords": [],
   "author": "",
