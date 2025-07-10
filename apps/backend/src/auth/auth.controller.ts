@@ -20,6 +20,7 @@ import { OAuthService } from '@/oauth/oauth.service';
 import { OAuthProvider } from '@/oauth/oauth.types';
 
 import { SubmitOAuthSession } from './auth.dto';
+import { SkipAuth } from './auth.guard';
 import { AuthService } from './auth.service';
 
 @LoggedController('auth')
@@ -35,12 +36,12 @@ export class AuthController {
    * @summary Request OAuth (Auth)
    * @tag Auth
    * @tag OAuth
-   * @security bearer
    *
    * @param provider The OAuth provider to use.
    * @returns The URL to redirect to for OAuth authentication.
    */
   @TypedRoute.Get(':provider')
+  @SkipAuth()
   @Returns('url')
   requestOAuthSession(
     @Logged('provider') @TypedParam('provider') provider: OAuthProvider,
@@ -71,6 +72,7 @@ export class AuthController {
     status: 500,
     description: 'Failed to fetch user info from oauth provider',
   })
+  @SkipAuth()
   async submitOAuthSession(
     @Logged('provider') @TypedParam('provider') provider: OAuthProvider,
     @TypedQuery() query: SubmitOAuthSession.Query,
