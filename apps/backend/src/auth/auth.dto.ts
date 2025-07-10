@@ -12,15 +12,16 @@ export namespace SubmitOAuthSession {
   export type InvalidOAuthCodeException =
     HTTPExceptionBase<'invalid_oauth_code'>;
   export type UserInfoFetchFailedException = HTTPExceptionBase<
-    'user_info_fetch_failed',
-    {
-      httpStatus: number;
-    }
-  >;
-  export type IdNotFoundException = HTTPExceptionBase<
-    'id_not_found',
-    {
-      responseJson: Record<string, unknown>;
-    }
+    'user_info_failed',
+    | {
+        /** Failed to fetch user info from OAuth provider. */
+        reason: 'fetch_failed';
+        httpStatus: number;
+      }
+    | {
+        /** User ID not found in response JSON. */
+        reason: 'id_not_found';
+        responseJson: Record<string, unknown>;
+      }
   >;
 }

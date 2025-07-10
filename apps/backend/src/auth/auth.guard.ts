@@ -9,6 +9,8 @@ import { Reflector } from '@nestjs/core';
 import { FastifyRequest } from 'fastify';
 import { InjectLogger, LoggedGuard, ScopedLogger } from 'nestlogged-fastify';
 
+import { ForbiddenException, HTTPExceptionBase } from '@/error';
+
 import { AuthService } from './auth.service';
 
 export const SKIP_AUTHENTICATION = 'SKIP_AUTHENTICATION';
@@ -37,14 +39,20 @@ export class AuthGuard implements CanActivate {
     const request = context.switchToHttp().getRequest<FastifyRequest>();
     const token = request.cookies[SESSION_COOKIE];
     if (!token) {
-      logger?.log('No session cookie found');
-      return false;
+      logger?.log(`No session cookie found (${SESSION_COOKIE}: ${token})`);
+      throw new ForbiddenException<AuthGuard.InvalidSessionException>(
+        'invalid_session',
+        { session: token },
+      );
     }
 
     const userId = await this.authService.getUserIdBySession(token);
     if (userId === null) {
-      logger?.log('Invalid session cookie found');
-      return false;
+      logger?.log(`Invalid session cookie found (${SESSION_COOKIE}: ${token})`);
+      throw new ForbiddenException<AuthGuard.InvalidSessionException>(
+        'invalid_session',
+        { session: token },
+      );
     }
 
     return true;

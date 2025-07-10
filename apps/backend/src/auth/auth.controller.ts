@@ -4,11 +4,7 @@ import {
   TypedQuery,
   TypedRoute,
 } from '@nestia/core';
-import {
-  BadRequestException,
-  InternalServerErrorException,
-  Res,
-} from '@nestjs/common';
+import { Res } from '@nestjs/common';
 
 import { FastifyReply } from 'fastify';
 import {
@@ -19,6 +15,7 @@ import {
   ScopedLogger,
 } from 'nestlogged-fastify';
 
+import { BadRequestException, InternalServerErrorException } from '@/error';
 import { OAuthService } from '@/oauth/oauth.service';
 import { OAuthProvider } from '@/oauth/oauth.types';
 
@@ -38,6 +35,7 @@ export class AuthController {
    * @summary Request OAuth (Auth)
    * @tag Auth
    * @tag OAuth
+   * @security bearer
    *
    * @param provider The OAuth provider to use.
    * @returns The URL to redirect to for OAuth authentication.
@@ -73,11 +71,6 @@ export class AuthController {
     status: 500,
     description: 'Failed to fetch user info from oauth provider',
   })
-  @TypedException<SubmitOAuthSession.IdNotFoundException>({
-    status: 500,
-    description:
-      'Successfully fetched oauth info, but failed to find user id in oauth response',
-  })
   async submitOAuthSession(
     @Logged('provider') @TypedParam('provider') provider: OAuthProvider,
     @TypedQuery() query: SubmitOAuthSession.Query,
@@ -93,9 +86,10 @@ export class AuthController {
 
     // if failed to get access token, throw error
     if (!accessTokenTry.ok) {
-      throw new BadRequestException({
-        code: 'invalid_oauth_code',
-      });
+      throw new BadRequestException<SubmitOAuthSession.InvalidOAuthCodeException>(
+        'invalid_oauth_code',
+        void 0,
+      );
     }
 
     // we have access token, try to get oauth user info
@@ -108,20 +102,22 @@ export class AuthController {
     // if failed to get oauth user info, throw error
     if (!oauthUser.ok) {
       if (oauthUser.code === 'user_info_fetch_failed') {
-        throw new InternalServerErrorException({
-          code: 'user_info_fetch_failed',
-          error: {
+        throw new InternalServerErrorException<SubmitOAuthSession.UserInfoFetchFailedException>(
+          'user_info_failed',
+          {
+            reason: 'fetch_failed',
             httpStatus: oauthUser.error.status,
           },
-        });
+        );
       }
       if (oauthUser.code === 'id_not_found') {
-        throw new InternalServerErrorException({
-          code: 'id_not_found',
-          error: {
+        throw new InternalServerErrorException<SubmitOAuthSession.UserInfoFetchFailedException>(
+          'user_info_failed',
+          {
+            reason: 'id_not_found',
             responseJson: oauthUser.error,
           },
-        });
+        );
       }
     }
 
